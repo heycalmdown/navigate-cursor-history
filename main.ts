@@ -59,9 +59,6 @@ export default class MyPlugin extends Plugin {
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new SampleSettingTab(this.app, this));
 
-		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
-
 		this.registerInterval(window.setInterval(() => {
 			// const view = this.app.workspace.getActiveViewOfType(MarkdownView);
 			const editor = this.app.workspace.getActiveViewOfType(MarkdownView)?.editor
