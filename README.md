@@ -1,4 +1,4 @@
-## Cursor Position
+## Navigate Cursor History
 
 This plugin remembers the recent 50 cursor positions history and allows you to jump to them back and forth like VSCode.
 
@@ -10,8 +10,8 @@ This plugin remembers the recent 50 cursor positions history and allows you to j
 
 ### Commands
 
-- Cursor Position: Go back
-- Cursor Position: Go forward
+- Navigate Cursor History: Go back
+- Navigate Cursor History: Go forward
 
 You can set hotkeys for the commands. `^-` for the backward and `^=` for the forward.
 

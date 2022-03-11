@@ -12,7 +12,7 @@ function logHistory(backward: History[], cur: History, forward: History[]) {
 	console.log(backward.map(historyToString), historyToString(cur), forward.map(historyToString))
 }
 
-export default class CursorPositionPlugin extends Plugin {
+export default class NavigateCursorHistory extends Plugin {
 	backward: History[] = [];
 	forward: History[] = [];
 	cur: History;
