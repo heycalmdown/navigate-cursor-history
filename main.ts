@@ -5,11 +5,11 @@ interface History {
 	line: number;
 }
 
-function historyToString(history: History) {
-	return `${history.file.path}@${history.line}`
-}
+// function historyToString(history: History) {
+// 	return `${history.file.path}@${history.line}`
+// }
 function logHistory(backward: History[], cur: History, forward: History[]) {
-	console.log(backward.map(historyToString), historyToString(cur), forward.map(historyToString))
+	// console.log(backward.map(historyToString), historyToString(cur), forward.map(historyToString))
 }
 
 export default class NavigateCursorHistory extends Plugin {
