@@ -43,7 +43,9 @@ export default class NavigateCursorHistory extends Plugin {
 					await this.app.workspace.getMostRecentLeaf().openFile(prev.file)
 				}
 				this.cur = prev
-				editor.setSelection({ line: prev.line, ch: prev.ch });
+				const pos: EditorPosition = { line: prev.line, ch: prev.ch }
+				editor.setSelection(pos);
+				editor.scrollIntoView({ from: pos, to: pos }, true);
 				logHistory(this.backward, this.cur, this.forward)
 			}
 		});
@@ -59,13 +61,15 @@ export default class NavigateCursorHistory extends Plugin {
 				if (cur.file !== prev.file) {
 					await this.app.workspace.getMostRecentLeaf().openFile(prev.file)
 				}
-				editor.setSelection({ line: prev.line, ch: prev.ch });
+				const pos: EditorPosition = { line: prev.line, ch: prev.ch }
+				editor.setSelection(pos);
+				editor.scrollIntoView({ from: pos, to: pos }, true);
 				logHistory(this.backward, this.cur, this.forward)
 			}
 		});
 
 		this.registerInterval(window.setInterval(() => {
-			if (!this.cur.file) return;
+			if (!this.cur) return;
 			const editor = this.app.workspace.getActiveViewOfType(MarkdownView)?.editor
 			if (editor) {
 				const cursor = editor.getCursor("head");
