@@ -14,12 +14,3 @@ This plugin remembers the recent 50 cursor positions history and allows you to j
 - Navigate Cursor History: Go forward
 
 You can set hotkeys for the commands. `^-` for the backward and `^=` for the forward.
-
-### Installation
-
-As it is not a registered plugin you need to install it manually.
-
-- Clone the repository in your plugin folder(Usually `{your-vault}/.obsidian/plugins`)
-- `npm install`
-- `npm run build`
-- Reload Obsidian

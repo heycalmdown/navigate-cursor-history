@@ -1,8 +1,9 @@
-import { TFile, Editor, MarkdownView, Plugin } from 'obsidian';
+import { EditorPosition, TFile, Editor, MarkdownView, Plugin } from 'obsidian';
 
 interface History {
 	file: TFile;
 	line: number;
+	ch: number;
 }
 
 // function historyToString(history: History) {
@@ -21,10 +22,10 @@ export default class NavigateCursorHistory extends Plugin {
 		this.registerEvent(
 			this.app.workspace.on('file-open', (file) => {
 				if (!this.cur) {
-					this.cur = { file, line: 0 };
+					this.cur = { file, line: 0, ch: 0 };
 				}
 				if (this.cur.file !== file) {
-					this.saveHistory(file, 0);
+					this.saveHistory(file, { line: 0, ch: 0 });
 				}
 			}),
 		);
@@ -42,7 +43,7 @@ export default class NavigateCursorHistory extends Plugin {
 					await this.app.workspace.getMostRecentLeaf().openFile(prev.file)
 				}
 				this.cur = prev
-				editor.setSelection({ line: prev.line, ch: 0 });
+				editor.setSelection({ line: prev.line, ch: prev.ch });
 				logHistory(this.backward, this.cur, this.forward)
 			}
 		});
@@ -58,16 +59,17 @@ export default class NavigateCursorHistory extends Plugin {
 				if (cur.file !== prev.file) {
 					await this.app.workspace.getMostRecentLeaf().openFile(prev.file)
 				}
-				editor.setSelection({ line: prev.line, ch: 0 });
+				editor.setSelection({ line: prev.line, ch: prev.ch });
 				logHistory(this.backward, this.cur, this.forward)
 			}
 		});
 
 		this.registerInterval(window.setInterval(() => {
+			if (!this.cur.file) return;
 			const editor = this.app.workspace.getActiveViewOfType(MarkdownView)?.editor
 			if (editor) {
 				const cursor = editor.getCursor("head");
-				this.saveHistory(this.cur.file, cursor.line);
+				this.saveHistory(this.cur.file, cursor);
 			}
 		}, 1 * 1000));
 	}
@@ -76,10 +78,14 @@ export default class NavigateCursorHistory extends Plugin {
 
 	}
 
-	saveHistory(file: TFile, line: number) {
-		if (file === this.cur.file && line === this.cur.line) return;
+	saveHistory(file: TFile, cursor: EditorPosition) {
+		if (file === this.cur.file && cursor.line === this.cur.line && cursor.ch === this.cur.ch) return;
+		if (file === this.cur.file && cursor.line === this.cur.line && cursor.ch !== this.cur.ch) {
+			this.cur.ch = cursor.ch
+			return
+		}
 		this.backward.push(this.cur)
-		this.cur = { file, line }
+		this.cur = { file, line: cursor.line, ch: cursor.ch }
 		this.backward = this.backward.slice(-50)
 		this.forward = []
 		logHistory(this.backward, this.cur, this.forward)
