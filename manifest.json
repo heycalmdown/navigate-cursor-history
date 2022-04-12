@@ -1,7 +1,7 @@
 {
 	"id": "heycalmdown-navigate-cursor-history",
 	"name": "Navigate Cursor History",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"minAppVersion": "0.12.0",
 	"description": "This plugin remembers the recent 50 cursor positions history and allows you to jump to them back and forth like VSCode",
 	"author": "heycalmdown",
